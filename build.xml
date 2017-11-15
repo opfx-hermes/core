@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="default" name="core" xmlns:ac="antlib:net.sf.antcontrib"  xmlns:php="antlib:org.opfx.ant.php">
+	<target name="default"/>
+</project>

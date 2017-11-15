@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buildpath>
+	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
+	<buildpathentry kind="con" path="org.eclipse.dltk.USER_LIBRARY/PHPUnit 4"/>
+	<buildpathentry kind="src" path="src/main/php"/>
+	<buildpathentry kind="src" path="src/test/php"/>
+</buildpath>
