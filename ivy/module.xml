@@ -9,17 +9,15 @@
 		<description homepage="" />
 	</info>
 	<configurations>
-		<conf name="default" visibility="public" extends="master" description="The module&apos;s artifacts and all it&apos;s runtime transitive dependencies"/>
+		<conf name="default" visibility="public" extends="master,php-release" description="The module&apos;s artifacts and all it&apos;s runtime transitive dependencies"/>
 		<conf name="master" visibility="public" description="The module&apos;s artifacts only (No transitive dependencies)" transitive="false"/>
 		<conf name="php-release" visibility="public"/>
 		<conf name="php-debug" visibility="public"/>
 	</configurations>
 	<publications>
-		<artifact name="core" type="lib" ext="phar" conf="php-release" />
+		<artifact name="core" type="lib" ext="phar" conf="master" />
 	</publications>
-	<dependencies>
-		<!-- 
-		<dependency org="opfx" name="opfx" rev="latest.revision" conf="*->@(default)"/>
-		 -->
+	<dependencies>		
+		<dependency org="opfx" name="opfx" rev="latest.revision" conf="*->@"/>		
 	</dependencies>
 </ivy-module>
