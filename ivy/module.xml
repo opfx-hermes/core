@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
+	<info organisation="hermes"
+		module="core"
+		revision="0.0.1"
+		status="devel"
+		publication="20140129142015"		
+	>
+		<description homepage="" />
+	</info>
+	<configurations>
+		<conf name="default" visibility="public" extends="master" description="The module&apos;s artifacts and all it&apos;s runtime transitive dependencies"/>
+		<conf name="master" visibility="public" description="The module&apos;s artifacts only (No transitive dependencies)" transitive="false"/>
+		<conf name="php-release" visibility="public"/>
+		<conf name="php-debug" visibility="public"/>
+	</configurations>
+	<publications>
+		<artifact name="core" type="lib" ext="phar" conf="php-release" />
+	</publications>
+	<dependencies>
+		<!-- 
+		<dependency org="opfx" name="opfx" rev="latest.revision" conf="*->@(default)"/>
+		 -->
+	</dependencies>
+</ivy-module>
