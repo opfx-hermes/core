@@ -4,4 +4,8 @@
 	<property name='tool.home' location='../.tool/'/>
 	
 	<import file='${tool.home}/resources/ant/main.xml' />
+	
+	<target name='package' depends='main.package'>
+		<copy file='${dist.dir}/${ant.project.name}.phar' todir='${basedir}/site/lib'/>
+	</target>
 </project>
