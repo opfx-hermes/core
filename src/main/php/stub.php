@@ -2,7 +2,7 @@
 
 function ___PHAR___STARTUP() {
 	$___PHAR___DEBUG = false;
-	if ( isset( $_SERVER['QUERY_STRING'] ) && stripos( $_SERVER['QUERY_STRING'], 'start_debug' ) !== false ) {
+	if ( ( isset( $_SERVER['QUERY_STRING'] ) && stripos( $_SERVER['QUERY_STRING'], 'start_debug' ) !== false ) || ( isset( $_COOKIE['debug_host'] ) ) ) {
 		$___PHAR___DEBUG = true;
 	}
 	if ( defined( 'DEBUG' ) ) {
