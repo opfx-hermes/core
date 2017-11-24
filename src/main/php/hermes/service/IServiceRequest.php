@@ -2,7 +2,9 @@
 
 namespace hermes\service;
 
-use \Object;
-
 interface IServiceRequest {
+
+	public function getServiceName(): string;
+
+	public function getMethodName(): string;
 }

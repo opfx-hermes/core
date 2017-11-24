@@ -37,6 +37,8 @@ function ___PHAR___STARTUP() {
 		}
 
 		$classes = array ( ___CLASSLIST___ );
+		$aliases = array ( ___ALIASES___ );
+		$services = array ( ___SERVICES___ );
 
 		$___PHAR___ClassLoader = function ( $cn ) use ($classes, $___PHAR___PATH ) {
 
@@ -56,6 +58,13 @@ function ___PHAR___STARTUP() {
 			$___PHAR___ClassLoader( $cn );
 		}
 	}
+	foreach ( $services as $serviceName => $serviceClass ) {
+		register_service_class( $serviceName, $serviceClass );
+	}
+}
+
+function register_service_class( $serviceName, $serviceClass ) {
+	\hermes\internal\service\ServiceRegistry::registerServiceClass( $serviceName, $serviceClass );
 }
 
 ___PHAR___STARTUP();
