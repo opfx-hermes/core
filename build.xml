@@ -1,11 +1,118 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project basedir="." default="default" name="core" xmlns:ac="antlib:net.sf.antcontrib"  xmlns:php="antlib:org.opfx.ant.php">
+<project basedir="." default="default" name="core" xmlns:ac="antlib:net.sf.antcontrib"  xmlns:php="antlib:org.opfx.ant.php" xmlns:if="ant:if" xmlns:unless="ant:unless">
 	<property environment='env'/>
 	<property name='tool.home' location='../.tool/'/>
 	
 	<import file='${tool.home}/resources/ant/main.xml' />
-	
+	<!--
 	<target name='package' depends='main.package'>
+	-->
+	<target name="aliases">
+		<local name="regexp"/>
+		<property name="regexp" value="(?m)^namespace(?:\s+)([^\s;]+);(?:[^.|$|]+?(?=@alias))@alias(.+?)$(?:[^.|$|]+?(?=class))class(?:\s+)(.+?(?=\s))"/>
+		
+		<ac:var name="aliases" value=""/>
+		<ac:for param="file">
+			<path>
+				<fileset dir="${basedir}/src/main/php" excludes="stub*"/>
+			</path>
+			<sequential>
+				<local name="input"/>
+				<local name="match"/>
+				<local name="file.aliases"/>
+				<local name="file.class"/>
+				<loadfile property="input" srcfile="@{file}"/>
+				
+				<!-- try to find the classes that have an @alias annotation -->
+				<ac:propertyregex property="match" input="${input}" regexp="${regexp}" select="\2;\1@\3" global="true" defaultValue=""/>
+				<ac:propertyregex property="match" input="${match}" regexp="@" replace="\\\" override="true"/>
+	
+				<!-- identify the fragments we care about : the alias(es) and the class -->
+				<ac:propertyregex property="file.aliases" input="${match}" regexp="^(.+);" select="\1" defaultValue=""/>
+				<ac:propertyregex property="file.class" input="${match}" regexp=";(.+)" select="\1" defaultValue=""/>
+				<ac:for list='${file.aliases}' trim='true' param='alias'>
+					<sequential>
+						<!-- todo alias must contain only lowercases and dashes -->
+						<lowercase property="file.class" from="${file.class}" overwrite="true" />
+						<ac:var name='aliases' value="${aliases} '@{alias}'=>'${file.class}',${line.separator}"/>
+					</sequential>
+				</ac:for>	
+			</sequential>
+		</ac:for>
+	</target>
+	
+	<target name="services">
+			<local name="regexp"/>
+			<property name="regexp" value="(?m)^namespace(?:\s+)([^\s;]+);(?:[^.|$|]+?(?=@service))@service(.+?)$(?:[^.|$|]+?(?=class))class(?:\s+)(.+?(?=\s))"/>
+			
+			<ac:var name="services" value=""/>
+			<ac:for param="file">
+				<path>
+					<fileset dir="${basedir}/src/main/php" excludes="stub*"/>
+				</path>
+				<sequential>
+					<local name="input"/>
+					<local name="match"/>
+					<local name="file.services"/>
+					<local name="file.class"/>
+					<loadfile property="input" srcfile="@{file}"/>
+					
+					<!-- try to find the classes that have an @alias annotation -->
+					<ac:propertyregex property="match" input="${input}" regexp="${regexp}" select="\2;\1@\3" global="true" defaultValue=""/>
+					<ac:propertyregex property="match" input="${match}" regexp="@" replace="\\\" override="true"/>
+		
+					<!-- identify the fragments we care about : the alias(es) and the class -->
+					<ac:propertyregex property="file.services" input="${match}" regexp="^(.+);" select="\1" defaultValue=""/>
+					<ac:propertyregex property="file.class" input="${match}" regexp=";(.+)" select="\1" defaultValue=""/>
+					
+					<ac:for list='${file.services}' trim='true' param='service'>
+						<sequential>
+							<!-- todo alias must contain only lowercases and dashes -->
+							<lowercase property="file.class" from="${file.class}" overwrite="true" />
+							<ac:var name='services' value="${services} '@{service}'=>'${file.class}',${line.separator}"/>
+						</sequential>
+					</ac:for>	
+				</sequential>
+			</ac:for>
+		
+		</target>
+	
+	<target name='package' depends='lint,aliases,services'>
+		<php:phar basedir="${bin.dir}" destfile="${dist.dir}/${ant.project.name}.phar" >
+			<var name="ALIASES" value="${aliases}"/>
+			<var name="SERVICES" value="${services}"/>
+		</php:phar>
+	
+		<available file='${basedir}/../main/site/lib' property='upload'/>
 		<copy file='${dist.dir}/${ant.project.name}.phar' todir='${basedir}/site/lib'/>
 	</target>
+						
+						<macrodef name="lowercase">
+								<attribute name="property"/>
+								<attribute name="from"/>
+								<attribute name="overwrite" default="false"/>
+								<sequential>
+									<!-- 
+										javascript code below cannot read attributes so we need to turn the macro's attributes
+										into properties which are accessible to javascript
+									-->	
+									<local name="property"/>
+									<local name="from"/>
+									<local name="overwrite"/>
+									
+									<property name="property" value="@{property}"/>
+									<property name="from" value="@{from}"/>
+									<property name="overwrite" value="@{overwrite}"/>
+									
+									<script language="javascript"><![CDATA[
+										var property = project.getProperty('property');
+										var oldValue = project.getProperty('property');
+										
+										
+										if(oldValue==null || (oldValue!=null && project.getProperty('overwrite') == "true")) {
+											project.setProperty(property, project.getProperty('from').toLowerCase());
+										}
+									]]></script>
+								</sequential>
+							</macrodef>						
 </project>

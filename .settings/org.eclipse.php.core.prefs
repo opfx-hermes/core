@@ -1,2 +1,2 @@
 eclipse.preferences.version=1
-include_path=5;org.eclipse.dltk.USER_LIBRARY/PHPUnit 4\u00052;/opfx
+include_path=0;/core/src/main/php\u00050;/core/src/test/php\u00055;org.eclipse.dltk.USER_LIBRARY/PHPUnit 4\u00052;/opfx
