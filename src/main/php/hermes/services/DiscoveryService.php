@@ -47,7 +47,7 @@ class DiscoveryService extends AbstractService {
 
 				//FIXME we should first try to get the docblock return annotation
 				$methodDescriptor->return = $methodReflector->getReturnType();
-				$methodDescriptors[] = $methodDescriptor;
+				$methodDescriptors[$methodDescriptor->name] = $methodDescriptor;
 			}
 			$serviceDescriptor = new stdClass();
 			$serviceDescriptor->name = $service->getName();
