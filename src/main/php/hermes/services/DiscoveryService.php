@@ -34,7 +34,7 @@ class DiscoveryService extends AbstractService {
 				if ( strpos( $methodDescriptor->comment, '@api' ) == false ) {
 					continue;
 				}
-// 				$parameterDescriptors = [ ];
+				$parameterDescriptors = [ ];
 // 				$parameterReflectors = $methodReflector->getParameters();
 
 // 				/** @var \ReflectionParameter $parameterReflector */
@@ -45,6 +45,7 @@ class DiscoveryService extends AbstractService {
 // 					$parameterDescriptors[] = $parameterDescriptor;
 // 				}
 
+				$methodDescriptor->parameters = $parameterDescriptors;
 				//FIXME we should first try to get the docblock return annotation
 				$methodDescriptor->return = $methodReflector->getReturnType();
 				$methodDescriptors[$methodDescriptor->name] = $methodDescriptor;

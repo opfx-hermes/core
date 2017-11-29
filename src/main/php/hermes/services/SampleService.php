@@ -23,4 +23,10 @@ class SampleService extends AbstractService {
 	 */
 	public function updateSampleEntity( SampleEntity $entity ): void {
 	}
+
+	/**
+	 * @api
+	 */
+	public function deleteSampleEntity(): void {
+	}
 }

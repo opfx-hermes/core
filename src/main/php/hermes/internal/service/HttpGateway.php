@@ -2,7 +2,6 @@
 
 namespace hermes\internal\service;
 
-use stdClass;
 use Object;
 use opfx\net\URL;
 
@@ -17,10 +16,6 @@ class HttpGateway extends Object {
 	public function __construct() {
 		parent::__construct();
 		$this->context = new ServiceContext();
-	}
-
-	public function getRouter(): Router {
-		return $this->router;
 	}
 
 	public function service() {
@@ -46,33 +41,36 @@ class HttpGateway extends Object {
 		$request->setUrl( $url );
 		$request->setMethod( $_SERVER['REQUEST_METHOD'] );
 		$request->setContentType( self::getRequestContentType() );
+//		if ( $request->getContentType() == 'application/json' ) {
 
-		if ( $request->getContentType() == 'application/json' ) {
-			if ( isset( $_REQUEST['json'] ) ) {
-				$request->setBody( $_REQUEST['json'] );
-			}
+		$rawPostData = file_get_contents( 'php://input' );
+		if ( isset( $GLOBALS['MOCK_RAWPOST'] ) ) {
+			$rawPostData = $GLOBALS['MOCK_RAWPOST'];
+		}
+		if ( ! empty( $rawPostData ) ) {
 
-			$rawPostData = file_get_contents( 'php://input' );
-			if ( isset( $GLOBALS['MOCK_RAWPOST'] ) ) {
-				$rawPostData = $GLOBALS['MOCK_RAWPOST'];
-			}
-			if ( ! empty( $rawPostData ) ) {
-				$data = json_decode( $rawPostData );
-			}
+			$data = json_decode( $rawPostData );
+		}
 
-			$properties = get_object_vars( $data );
-			foreach ( $properties as $name => $value ) {
-				if ( is_string( $value ) ) {
-					$request->setParameter( $name, $value );
-				} else {
-					$request->setParameterValues( $name, $value );
-				}
+		$properties = get_object_vars( $data );
+
+		foreach ( $properties as $name => $value ) {
+			if ( is_string( $value ) ) {
+				$request->setParameter( $name, $value );
+			} else {
+				$request->setParameterValues( $name, $value );
 			}
 		}
+		//	}
 	}
 
 	private function flushResponse( HttpServiceResponse $response ): void {
-		$output = $response->getBody();
+		$result = new \stdClass();
+		$result->errorCode = 0;
+		$result->error = null;
+		$result->result = $response->getBody();
+		$output = json_encode( $result );
+// 		$output = $response->getBody();
 		echo $output;
 	}
 

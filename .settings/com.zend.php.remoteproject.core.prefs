@@ -1,5 +1,5 @@
-Save\ Mode=ON_SAVE
-SelectedHostGUID=1a3a4a79-07eb-4fe6-88ff-b4a338ee1362
+Save\ Mode=MANUALLY
+SelectedHostGUID=7a5c0525-a576-43f3-bed9-d39f91dd5488
 UploadFolder=/hermes
 eclipse.preferences.version=1
 exclusionPatterns=dist/*.*|src/
