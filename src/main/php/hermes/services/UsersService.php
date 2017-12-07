@@ -22,4 +22,7 @@ class UserService extends AbstractService {
 	 */
 	public function getUser(): void {
 	}
+
+	public function getUsers() {
+	}
 }

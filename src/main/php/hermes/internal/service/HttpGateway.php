@@ -4,6 +4,7 @@ namespace hermes\internal\service;
 
 use Object;
 use opfx\net\URL;
+use hermes\util\archives\JsonArchive;
 
 class HttpGateway extends Object {
 
@@ -21,27 +22,14 @@ class HttpGateway extends Object {
 	public function service() {
 // 		$request = HttpServiceRequest::create();
 		$request = new HttpServiceRequest();
-		$this->parseRequest( $request );
+// 		$this->parseRequest( $request );
 
-		$response = new HttpServiceResponse();
-
-		$response->setContentType( $request->getContentType() );
-
-		$result = $this->context->process( $request, $response );
-
-		$data = json_encode( $result );
-		$response->appendBody( $data );
-
-		$this->flushResponse( $response );
-	}
-
-	private function parseRequest( HttpServiceRequest $request ) {
 		$strUrl = "{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['SERVER_NAME']}:{$_SERVER['SERVER_PORT']}{$_SERVER['REQUEST_URI']}";
 		$url = new URL( $strUrl );
 		$request->setUrl( $url );
 		$request->setMethod( $_SERVER['REQUEST_METHOD'] );
 		$request->setContentType( self::getRequestContentType() );
-//		if ( $request->getContentType() == 'application/json' ) {
+		//		if ( $request->getContentType() == 'application/json' ) {
 
 		$rawPostData = file_get_contents( 'php://input' );
 		if ( isset( $GLOBALS['MOCK_RAWPOST'] ) ) {
@@ -51,27 +39,16 @@ class HttpGateway extends Object {
 
 			$data = json_decode( $rawPostData );
 		}
+		$archive = new JsonArchive( false, $data );
+		$request->marshall( $archive );
 
-		$properties = get_object_vars( $data );
+		$response = new HttpServiceResponse();
 
-		foreach ( $properties as $name => $value ) {
-			if ( is_string( $value ) ) {
-				$request->setParameter( $name, $value );
-			} else {
-				$request->setParameterValues( $name, $value );
-			}
-		}
-		//	}
-	}
+		$response->setContentType( $request->getContentType() );
 
-	private function flushResponse( HttpServiceResponse $response ): void {
-		$result = new \stdClass();
-		$result->errorCode = 0;
-		$result->error = null;
-		$result->result = $response->getBody();
-		$output = json_encode( $result );
-// 		$output = $response->getBody();
-		echo $output;
+		$result = $this->context->process( $request, $response );
+
+		echo $response;
 	}
 
 	private static function getRequestContentType(): string {

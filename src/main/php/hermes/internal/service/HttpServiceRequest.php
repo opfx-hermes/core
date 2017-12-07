@@ -3,8 +3,11 @@
 namespace hermes\internal\service;
 
 use opfx\net\http\HTTPRequest;
+use hermes\util\Archive;
 
 class HttpServiceRequest extends HTTPRequest {
+	private $session;
+	private $target;
 
 	/**
 	 *
@@ -17,5 +20,21 @@ class HttpServiceRequest extends HTTPRequest {
 			$result = $this->params[$name];
 		}
 		return $result;
+	}
+
+	public function getSession() {
+		return $this->session;
+	}
+
+	public function getTarget() {
+		return $this->target;
+	}
+
+	public function marshall( Archive $archive ): void {
+		if ( ! $archive->isStoring() ) {
+			$this->session = $archive->session;
+			$this->target = $archive->target;
+		}
+		//TODO UnsupportedOperation?
 	}
 }

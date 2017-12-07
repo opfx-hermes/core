@@ -11,8 +11,7 @@ class ContentsService extends AbstractService {
 	 * @api
 	 */
 	public function getMenuItems() {
-		$json = '[
-        {
+		$json = '[{
             "type": "item",
             "name": "Soccer",
             "id": 0
