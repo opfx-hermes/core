@@ -25,7 +25,7 @@ class User extends AbstractEntity implements IUser, IMarshallable {
 
 	public function marshall( Archive $archive ): void {
 		if ( $archive->isStoring() ) {
-			$archive->type = 'User';
+			$archive->alias = 'User';
 			$archive->id = 234543;
 			$archive->username = $this->username;
 		}

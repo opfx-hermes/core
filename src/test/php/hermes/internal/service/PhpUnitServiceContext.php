@@ -4,13 +4,11 @@ namespace hermes\internal\service;
 
 use Object;
 use hermes\IService;
-use hermes\services\DiscoveryService;
-use hermes\services\SampleService;
 use hermes\CoreException;
 use hermes\IContext;
 use opfx\data\Db;
 
-class ServiceContext extends Object implements IContext {
+class PhpUnitServiceContext extends Object implements IContext {
 	private $services;
 
 	public function __construct() {
@@ -20,9 +18,8 @@ class ServiceContext extends Object implements IContext {
 	}
 
 	protected function init() {
-		$cwd = getcwd();
-		$odbcIniFile = "$cwd/../etc/odbc.ini";
-		Db::loadConfiguration( $odbcIniFile );
+// 		$odbcIniFile = "$cwd/etc/odbc.ini";
+		Db::loadConfiguration( ODBC_INI_FILENAME );
 	}
 
 	public function getService( string $serviceName ): IService {

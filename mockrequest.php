@@ -46,18 +46,29 @@ $MOCK_GET = array (
 		'contentType' => 'application/json',
 );
 
-$MOCK_POST = array (
-		'{"serviceName":"DiscoveryService","methodName":"discover","parameters":' =>
-		array (
-				0 => '',
-		),
-);
+
+
+function createRequest($serviceName, $methodName, $parameters=[]) {
+	$request = new stdClass();
+	$request->session = new stdClass();
+	$request->session->id = 'debug';
+	$request->target = new stdClass();
+	$request->target->serviceName = $serviceName;
+	$request->target->methodName = $methodName;
+	$request->target->parameters = $parameters;
+
+	$request = json_encode($request);
+	return $request;
+}
+
 
 $MOCK_COOKIE = array (
 		'ZS6SESSID' => 'f8cb9f5026ccf026492c4b79911a1b9f',
 		'ZSDEVBAR' => '{}',
 );
 
-$MOCK_RAWPOST = '{"serviceName":"DiscoveryService","methodName":"discover","parameters":[]}';
+$request = createRequest('AccountsService', 'login', ['btw01', 'e3e3e3']);
+
+$MOCK_RAWPOST =$request;
 
 //@formatter:on
