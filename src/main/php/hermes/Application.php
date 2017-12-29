@@ -2,7 +2,7 @@
 
 namespace hermes;
 
-use Object;
+use opfx\Object;
 use hermes\internal\service\HttpGateway;
 
 class Application extends Object {

@@ -2,7 +2,7 @@
 
 namespace hermes\services;
 
-use Object;
+use opfx\Object;
 use hermes\IService;
 use hermes\IContext;
 

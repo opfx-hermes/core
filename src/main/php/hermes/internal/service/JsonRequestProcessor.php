@@ -2,7 +2,7 @@
 
 namespace hermes\internal\service;
 
-use \Object;
+use opfx\Object;
 use hermes\service\IServiceRequest;
 use hermes\service\IServiceResponse;
 use hermes;

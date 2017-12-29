@@ -2,7 +2,7 @@
 
 namespace hermes\internal\repositories;
 
-use \Object;
+use opfx\Object;
 use opfx\data\IDbConnection;
 use opfx\data\Db;
 use hermes\internal\entities\Account;

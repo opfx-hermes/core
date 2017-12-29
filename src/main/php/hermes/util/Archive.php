@@ -2,7 +2,7 @@
 
 namespace hermes\util;
 
-use Object;
+use opfx\Object;
 
 abstract class Archive extends \stdClass {
 	/**

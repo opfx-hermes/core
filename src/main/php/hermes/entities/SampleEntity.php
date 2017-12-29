@@ -2,7 +2,7 @@
 
 namespace hermes\entities;
 
-use Object;
+use opfx\Object;
 
 /**
  * This is a sample entity

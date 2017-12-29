@@ -2,7 +2,7 @@
 
 namespace hermes\internal\service;
 
-use Object;
+use opfx\Object;
 use hermes\IService;
 use hermes\CoreException;
 use hermes\IContext;

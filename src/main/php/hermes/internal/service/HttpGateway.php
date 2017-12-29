@@ -2,7 +2,7 @@
 
 namespace hermes\internal\service;
 
-use Object;
+use opfx\Object;
 use opfx\net\URL;
 use hermes\util\archives\JsonArchive;
 

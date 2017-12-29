@@ -2,7 +2,7 @@
 
 namespace hermes\internal\collections;
 
-use \Object;
+use opfx\Object;
 use hermes\internal\repositories\AccountRepository;
 use hermes\entities\IAccount;
 use hermes\IEntity;

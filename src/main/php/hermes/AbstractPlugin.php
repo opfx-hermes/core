@@ -2,7 +2,7 @@
 
 namespace hermes;
 
-use \Object;
+use opfx\Object;
 use hermes\internal\service\ServiceNotFoundException;
 
 abstract class AbstractPlugin extends Object {
